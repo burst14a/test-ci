@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.Name}}
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: {{ .Values.Name}}

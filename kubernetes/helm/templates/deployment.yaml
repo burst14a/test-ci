@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.Name}}
+  labels:
+    app: {{ .Values.Name}}
+spec:
+  replicas: {{ .Values.replicaCount}}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.maxSurge}}
+      maxUnavailable: {{ .Values.maxUnavailable}}
+  selector:
+    matchLabels:
+      app: {{ .Values.Name}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.Name}}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+
+    spec:
+{{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+{{- end }}
+      containers:
+        - name: {{ .Values.Name}}
+          image: {{ .Values.appImage}}
+{{- if .Values.resources }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+{{- end }}
+          ports:
+          - containerPort: 80

@@ -1,0 +1,9 @@
+version: '3'
+services:
+  example:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: example-app
+    ports:
+      - "80:80"

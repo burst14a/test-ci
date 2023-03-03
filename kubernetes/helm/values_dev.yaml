@@ -1,0 +1,28 @@
+replicaCount: 1
+Name: example-deployment
+hostEnv: testkube.kwigatwo.link
+maxSurge: 1
+maxUnavailable: 1
+secret_name_nginx: example-deployment-conf
+configmap_name_index: example-deployment-index
+
+resources:
+   limits:
+     cpu: 200m
+     memory: 200Mi
+   requests:
+     cpu: 10m
+     memory: 10Mi
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    kubernetes.io/ingress.class: "nginx"
+
+  hosts:
+    - host: testkube.kwigatwo.link
+      paths:
+        - path: /
+          pathType: Prefix
